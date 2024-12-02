@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.sampleproject.mapper.command.BoardCommandMapper">
+
+    <insert id="insertBoard" parameterType="com.hk.sampleproject.vo.BoardVo" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO tb_board (
+            title,
+            content,
+            view_count,
+            writer_id,
+            writer_ip,
+            created_at,
+            updated_at
+        ) VALUES (
+                     #{title},
+                     #{content},
+                     0,
+                     #{writerId},
+                     #{writerIp},
+                     CURRENT_TIMESTAMP,
+                     CURRENT_TIMESTAMP
+                 )
+    </insert>
+
+    <update id="updateBoard" parameterType="com.hk.sampleproject.vo.BoardVo">
+        UPDATE tb_board
+        SET
+            title = #{title},
+            content = #{content},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE board_id = #{boardId}
+          AND deleted_at IS NULL
+    </update>
+
+    <update id="deleteBoard">
+        UPDATE tb_board
+        SET deleted_at = CURRENT_TIMESTAMP
+        WHERE board_id = #{boardId}
+          AND deleted_at IS NULL
+    </update>
+
+    <update id="increaseViewCount">
+        UPDATE tb_board
+        SET view_count = view_count + 1
+        WHERE board_id = #{boardId}
+          AND deleted_at IS NULL
+    </update>
+
+</mapper>

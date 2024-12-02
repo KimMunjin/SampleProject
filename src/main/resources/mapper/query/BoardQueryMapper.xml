@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.sampleproject.mapper.query.BoardQueryMapper">
+
+    <select id="selectBoard" resultType="com.hk.sampleproject.vo.BoardVo">
+        SELECT
+            board_id,
+            title,
+            content,
+            view_count,
+            writer_id,
+            writer_ip,
+            created_at,
+            updated_at,
+            deleted_at
+        FROM tb_board
+        WHERE board_id = #{boardId}
+          AND deleted_at IS NULL
+    </select>
+
+    <select id="selectBoardList" resultType="com.hk.sampleproject.vo.BoardVo">
+        SELECT
+            board_id,
+            title,
+            content,
+            view_count,
+            writer_id,
+            writer_ip,
+            created_at,
+            updated_at
+        FROM tb_board
+        WHERE deleted_at IS NULL
+        ORDER BY board_id DESC
+    </select>
+
+    <select id="existsBoard" resultType="boolean">
+        SELECT
+            CASE
+                WHEN COUNT(*) > 0 THEN true
+                ELSE false
+                END
+        FROM tb_board
+        WHERE board_id = #{boardId}
+          AND deleted_at IS NULL
+    </select>
+
+</mapper>
