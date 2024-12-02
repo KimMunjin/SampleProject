@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+
+  postgres:
+    container_name: sampleproject_postgresql
+    image: postgres:17
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: "kim"
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: "sampleproject"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - backend
+
+
+volumes:
+  postgres_data:
+    name: sampleboard_postgres_data
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
