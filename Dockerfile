@@ -3,7 +3,7 @@ FROM gradle:7.6.1-jdk17 as builder
 WORKDIR /build
 
 # 빌드 스크립트만 복사
-COPY build.gradle /build/
+COPY build.gradle.kts /build/
 
 # 의존성 다운로드
 RUN gradle dependencies --no-daemon
