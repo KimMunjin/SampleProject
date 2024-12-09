@@ -20,6 +20,12 @@ public class BoardController {
     private final BoardCommandService boardCommandService;
     private final BoardQueryService boardQueryService;
 
+    /**
+     * 게시물 생성 API
+     *
+     * @param request
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Long> createBoard(
             @Valid @RequestBody CreateBoardRequest request
