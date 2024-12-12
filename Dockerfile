@@ -1,30 +1,31 @@
-# Build stage
-FROM gradle:7.6.1-jdk17 as builder
-WORKDIR /build
-
-# Gradle 래퍼와 빌드 스크립트 복사
-COPY gradlew /build/
-COPY gradle /build/gradle
-COPY build.gradle.kts settings.gradle.kts /build/
-
-# Gradle 래퍼에 실행 권한 부여
-RUN chmod +x ./gradlew
-
-# 의존성 다운로드
-RUN ./gradlew dependencies --no-daemon
-
-# 소스 복사
-COPY src /build/src
-
-# 빌드
-RUN ./gradlew build --no-daemon
-
-# Runtime stage
-FROM eclipse-temurin:17-jre
+# ------------- 빌드 스테이지 -------------
+FROM gradle:jdk17 AS build
 WORKDIR /app
 
-# 빌드 결과물 복사
-COPY --from=builder /build/build/libs/*.jar app.jar
+# gradle 관련 파일 복사
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle.kts settings.gradle.kts ./
 
-# 컨테이너 실행 시 실행할 명령
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+# Workflow에서 환경변수 가져오기
+ARG CURRENT_ENV
+ENV CURRENT_ENV=$CURRENT_ENV
+
+# gradlew 실행권한 부여
+RUN chmod +x ./gradlew
+
+# 소스코드 복사
+COPY src ./src
+
+# 애플리케이션 빌드
+RUN ./gradlew build -x test
+
+# ------------- 실행 스테이지 -------------
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+
+# 빌드된 결과물만 가져오기
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# 애플리케이션 실행
+ENTRYPOINT ["java", "-jar", "app.jar"]
