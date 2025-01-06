@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hk.sampleproject.mapper.FileMetadataMapper">
+    <insert id="insertFileMetadata" parameterType="com.hk.sampleproject.vo.FileMetadata">
+        INSERT INTO file_metadata (
+            s3_key,
+            file_path,
+            original_name,
+            content_type,
+            file_size
+        ) VALUES (
+                     #{s3Key},
+                     #{filePath},
+                     #{originalName},
+                     #{contentType},
+                     #{fileSize}
+                 )
+    </insert>
+</mapper>

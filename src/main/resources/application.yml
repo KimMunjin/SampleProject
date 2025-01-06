@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: SampleProject
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/sampleproject
+    username: kim
+    password: 1234
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.hk.sampleproject.vo
+
+logging:
+  level:
+    com:
+      hk:
+        sampleproject: DEBUG
+        sampleproject.mapper: TRACE
+
+aws:
+  region: ap-northeast-2
+  s3:
+    bucket: komca-samplebucket
